@@ -15,7 +15,7 @@ This Next.js Store Admin App is a comprehensive solution designed to streamline 
 - **[tRPC](https://trpc.io/)**: End-to-end typesafe APIs made easy.
 - **[Clerk](https://clerk.dev/)**: For secure authentication.
 - **[Drizzle ORM](https://drizzle.orm/)**: Elegant ORM for better database management.
-- **[PlanetScale](https://planetscale.com/)**: Scalable MySQL database for the cloud era.
+- **[Turso](https://turso.tech/)**: A cost-effective database solution for modern web applications.
 - **[Tailwind CSS](https://tailwindcss.com/)**: For utility-first styling.
 - **[Shadcn UI](https://shadcn.github.io/ui/)**: React component library for rapid development.
 - **[Zustand](https://github.com/pmndrs/zustand)**: A simple, fast, and scalable bearbones state-management solution.
