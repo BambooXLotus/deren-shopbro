@@ -2,9 +2,11 @@ import { ArrowRightIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useStoreModal } from "@/hooks/use-store-modal";
+import { useAuth } from "@clerk/nextjs";
 
 export const Welcome: React.FC = () => {
   const onOpen = useStoreModal((state) => state.onOpen);
+  const auth = useAuth();
   // const isOpen = useStoreModal((state) => state.isOpen);
 
   // const hello = api.store.hello.useQuery();

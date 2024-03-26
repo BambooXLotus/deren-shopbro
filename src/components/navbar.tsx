@@ -1,4 +1,7 @@
+"use client";
+
 import { VT323 } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -36,9 +39,10 @@ export const Navbar: React.FC<NavbarProps> = () => {
   // const { data: gasPrice } = api.alchemy.getGasPrice.useQuery();
 
   return (
-    <nav className="w-full bg-teal-600 px-5 py-1.5 backdrop-blur-sm md:px-10">
+    <nav className="w-full bg-teal-600 px-3 py-1.5 backdrop-blur-sm md:px-5">
       <div className="mx-auto flex items-center justify-between">
         <div className="flex flex-row items-center">
+          <Image src="/favicon-32x32.png" height="32" width="32" alt="logo" />
           <Link href="/" className="hidden md:block">
             <span
               className={cn(
@@ -46,7 +50,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
                 "mr-4 self-center whitespace-nowrap text-2xl font-extrabold text-orange-500",
               )}
             >
-              {`StoreBro`}
+              StoreBro
             </span>
           </Link>
           <NavBarItem target="/products/" label="Products" />
