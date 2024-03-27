@@ -1,6 +1,6 @@
 "use client";
 
-import { Welcome } from "../_components/welcome";
+import { Welcome } from '../_components/welcome';
 
 export default function HomePage() {
   // const { data: stores, isLoading } = api.store.getAll.useQuery();
@@ -11,7 +11,6 @@ export default function HomePage() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-3xl font-semibold">deren-shop</h2>
       {/* {!stores || (stores.length == 0 && <Welcome />)}
       <div>
         {stores?.map((store) => <div key={store.id}>{store.name}</div>)}

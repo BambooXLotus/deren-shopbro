@@ -95,23 +95,31 @@ export const MainNav: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = ({
       label: "Orders",
       active: pathname === `/${storeId}/orders`,
     },
-    {
-      href: `/${storeId}/settings`,
-      label: "Settings",
-      active: pathname === `/${storeId}/settings`,
-    },
+    // {
+    //   href: `/${storeId}/settings`,
+    //   label: "Settings",
+    //   active: pathname === `/${storeId}/settings`,
+    // },
   ];
 
   return (
-    <nav className={cn("flex items-center space-x-2 lg:space-x-4", className)}>
-      {routes.map((route) => (
-        <NavBarItem
-          key={route.href}
-          label={route.label}
-          target={route.href}
-          active={route.active}
-        />
-      ))}
+    <nav className={cn("flex", className)}>
+      <div className="flex items-center space-x-2 lg:space-x-4">
+        {routes.map((route) => (
+          <NavBarItem
+            key={route.href}
+            label={route.label}
+            target={route.href}
+            active={route.active}
+          />
+        ))}
+      </div>
+      <NavBarItem
+        key={`/${storeId}/orders`}
+        label="Settings"
+        target={`/${storeId}/orders`}
+        active={pathname === `/${storeId}/settings`}
+      />
     </nav>
   );
 };

@@ -1,8 +1,11 @@
-import { api } from "@/trpc/server";
-import { UserButton } from "@clerk/nextjs";
+import Image from 'next/image';
+import Link from 'next/link';
 
-import { MainNav } from "./main-nav";
-import { StoreSwitcher } from "./store-switcher";
+import { api } from '@/trpc/server';
+import { UserButton } from '@clerk/nextjs';
+
+import { MainNav } from './main-nav';
+import { StoreSwitcher } from './store-switcher';
 
 export const Navbar: React.FC = async () => {
   // const { isSignedIn, user } = useUser();
@@ -45,6 +48,15 @@ export const Navbar: React.FC = async () => {
     // </nav>
     <div className="border-b bg-teal-600">
       <div className="flex h-16 items-center px-4">
+        <Link href="/">
+          <Image
+            src="/android-chrome-192x192.png"
+            height="64"
+            width="64"
+            alt="logo"
+            className="mr-2"
+          />
+        </Link>
         <StoreSwitcher items={stores} />
         <MainNav className="mx-3" />
         <div className="ml-auto flex items-center space-x-4">
