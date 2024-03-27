@@ -20,4 +20,4 @@ export const stores = createTable(
     nameIndex: index("name_idx").on(store.name),
   }),
 );
-export type Store = typeof stores.$inferInsert;
+export type Store = typeof stores.$inferSelect;

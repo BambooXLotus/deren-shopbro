@@ -5,17 +5,11 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { stores } from "@/server/db/schema";
 
 export const storeRouter = createTRPCRouter({
-  getFirstByUserId: protectedProcedure
-    .input(
-      z.object({
-        userId: z.string(),
-      }),
-    )
-    .query(({ ctx, input }) => {
-      return ctx.db.query.stores.findFirst({
-        where: (stores, { eq }) => eq(stores.userId, input.userId),
-      });
-    }),
+  getFirst: protectedProcedure.query(({ ctx, input }) => {
+    return ctx.db.query.stores.findFirst({
+      where: (stores, { eq }) => eq(stores.userId, ctx.auth.userId),
+    });
+  }),
   getById: protectedProcedure
     .input(
       z.object({
@@ -28,7 +22,9 @@ export const storeRouter = createTRPCRouter({
       });
     }),
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.query.stores.findMany();
+    return ctx.db.query.stores.findMany({
+      where: (stores, { eq }) => eq(stores.userId, ctx.auth.userId),
+    });
   }),
   create: protectedProcedure
     .input(StoreCreateValidator)

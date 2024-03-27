@@ -45,18 +45,17 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
 
   const formattedItems = items.map((item) => ({
     label: item.name,
-    value: item.id?.toString(),
+    value: item.id.toString(),
   }));
 
   const currentStore = formattedItems.find(
     (item) => item.value === params.storeId,
   );
 
-  function onStoreSelect(store: string) {
-    // setOpen(false);
+  function onStoreSelect(store: { value: string; label: string }) {
+    setOpen(false);
 
-    // router.push(`/${store.value}`);
-    console.log("store - ", store);
+    router.push(`/${store.value}`);
   }
 
   return (
@@ -71,7 +70,7 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
           className={cn("w-[200px] justify-between", className)}
         >
           <StoreIcon className="mr-2 h-4 w-4" />
-          {currentStore?.label}
+          <span className="truncate">{currentStore?.label}</span>
           <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -84,7 +83,7 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
               {formattedItems.map((store) => (
                 <CommandItem
                   key={store.value}
-                  onSelect={(item) => onStoreSelect(item)}
+                  onSelect={() => onStoreSelect(store)}
                   className="text-sm"
                 >
                   <StoreIcon className="mr-2 h-4 w-4" />

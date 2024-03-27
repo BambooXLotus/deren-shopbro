@@ -1,61 +1,12 @@
-"use client";
-
-import { VT323 } from "next/font/google";
-import Link from "next/link";
-
-import { cn } from "@/lib/utils";
-import { UserButton, useUser } from "@clerk/nextjs";
+import { api } from "@/trpc/server";
+import { UserButton } from "@clerk/nextjs";
 
 import { MainNav } from "./main-nav";
+import { StoreSwitcher } from "./store-switcher";
 
-const pixel = VT323({
-  weight: "400",
-  subsets: ["latin"],
-});
-
-type NavBarItemProps = {
-  target: string;
-  label: string;
-  active?: boolean;
-};
-
-export const NavBarItem: React.FC<NavBarItemProps> = ({
-  target,
-  label,
-  active,
-}) => {
-  return (
-    // TODO: text glow on hover
-    <div
-      className={cn(
-        pixel.className,
-        "hover:deren-shadow hidden rounded-2xl px-1 py-1 text-xl text-white transition duration-300 hover:bg-teal-800 hover:text-orange-400 hover:opacity-80 md:block",
-        active ? "text-orange-500" : "text-muted-foreground",
-      )}
-    >
-      <Link href={target}>{label}</Link>
-    </div>
-
-    // <Link
-    //   key={target}
-    //   href={target}
-    //   className={cn(
-    //     pixel.className,
-    //     "text-xl font-medium transition-colors hover:text-primary",
-    //     active ? "text-black dark:text-white" : "text-muted-foreground",
-    //   )}
-    // >
-    //   {label}
-    // </Link>
-  );
-};
-
-type NavbarProps = {
-  id?: string;
-};
-
-export const Navbar: React.FC<NavbarProps> = () => {
-  const { isSignedIn, user } = useUser();
+export const Navbar: React.FC = async () => {
+  // const { isSignedIn, user } = useUser();
+  const stores = await api.store.getAll.query();
 
   return (
     // <nav className="bg-teal-600 px-4 py-1.5 backdrop-blur-sm md:px-5">
@@ -94,7 +45,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
     // </nav>
     <div className="border-b bg-teal-600">
       <div className="flex h-16 items-center px-4">
-        {/* <StoreSwitcher items={stores} /> */}
+        <StoreSwitcher items={stores} />
         <MainNav className="mx-3" />
         <div className="ml-auto flex items-center space-x-4">
           <UserButton afterSignOutUrl="/" />
