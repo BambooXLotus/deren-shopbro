@@ -2,7 +2,7 @@ import { sql } from "drizzle-orm";
 import { index, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
 
 export const createTable = sqliteTableCreator(
-  (name) => `deren-drizzle-test_${name}`,
+  (name) => `deren-storebro_${name}`,
 );
 
 export const stores = createTable(
