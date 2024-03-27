@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { api } from "@/trpc/server";
+import { Navbar } from "@/components/navbar";
 import { auth } from "@clerk/nextjs";
 
 type RootLayoutProps = {
@@ -15,18 +15,20 @@ const RootLayout: React.FC<RootLayoutProps> = async ({ children }) => {
   }
 
   //TODO: Show a welcome screen with a list of stores
-  const store = await api.store.getFirstByUserId.query({ userId });
+  // const store = await api.store.getFirstByUserId.query({ userId });
 
-  if (store) {
-    redirect(`/${store.id}`);
-  }
+  // if (store) {
+  //   redirect(`/${store.id}`);
+  // }
 
   return (
-    <div className="h-screen">
-      <div className="flex h-full items-center justify-center p-6">
+    <>
+      <Navbar />
+
+      <div className="flex h-full items-center justify-center p-6 pt-20">
         {children}
       </div>
-    </div>
+    </>
   );
 };
 

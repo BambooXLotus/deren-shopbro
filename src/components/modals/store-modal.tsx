@@ -34,37 +34,19 @@ export const StoreModal: React.FC = () => {
     },
   });
 
-  // const { mutate, isLoading } = useMutation({
-  //   mutationFn: async (values: StoreCreateRequest) => {
-  //     const { data } = await axios.post<Store>("/api/stores", values);
-  //     return data;
-  //   },
-  //   onSuccess: (store) => {
-  //     // if (form.formState.isSubmitSuccessful) {
-  //     //   toast.success("Store Created");
-  //     //   form.reset({
-  //     //     name: "",
-  //     //   });
-  //     // }
-  //     // window.location.assign(`/${store.id}`);
-  //     router.push(`/${store.id}`);
-  //   },
-  //   onError: (error) => {
-  //     console.log("error", error);
-  //     toast.error("Something Wong!!!");
-  //   },
-  // });
-
   const { mutate, isLoading } = api.store.create.useMutation({
-    onSuccess: (store) => {
-      // if (form.formState.isSubmitSuccessful) {
-      toast.success(`Store Created`);
-      //   form.reset({
-      //     name: "",
-      //   });
-      // }
-      // window.location.assign(`/${store.id}`);
-      // router.push(`/${store.id}`);
+    onSuccess: (stores) => {
+      if (form.formState.isSubmitSuccessful) {
+        toast.success(`Store Created`);
+        form.reset({
+          name: "",
+        });
+      }
+
+      const store = stores[0];
+      if (store) {
+        router.push(`/${store.id}`);
+      }
     },
     onError: (error) => {
       toast.error(`ERROR: ${error.message}`);
@@ -72,7 +54,6 @@ export const StoreModal: React.FC = () => {
   });
 
   function onSubmit(values: StoreCreateRequest) {
-    // console.log(values);
     mutate(values);
   }
 
