@@ -1,3 +1,4 @@
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { StoreCreateValidator } from "@/lib/validators/store-validators";
@@ -37,6 +38,44 @@ export const storeRouter = createTRPCRouter({
           name: input.name,
           userId: ctx.auth.userId,
         })
+        .returning();
+
+      return returnValue;
+    }),
+  edit: protectedProcedure
+    .input(
+      z.object({
+        storeId: z.number(),
+        name: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const returnValue = await ctx.db
+        .update(stores)
+        .set({
+          name: input.name,
+          userId: ctx.auth.userId,
+          // updatedAt:
+        })
+        .where(
+          and(eq(stores.id, input.storeId), eq(stores.userId, ctx.auth.userId)),
+        )
+        .returning();
+
+      return returnValue;
+    }),
+  delete: protectedProcedure
+    .input(
+      z.object({
+        storeId: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const returnValue = await ctx.db
+        .delete(stores)
+        .where(
+          and(eq(stores.id, input.storeId), eq(stores.userId, ctx.auth.userId)),
+        )
         .returning();
 
       return returnValue;
