@@ -48,12 +48,12 @@ export const Navbar: React.FC = async () => {
     // </nav>
     <div className="border-b bg-teal-600">
       <div className="flex h-16 items-center px-4">
-        <Link href="/">
+        <Link href="/" className="hidden md:block">
           <Image
             src="/android-chrome-192x192.png"
             height="64"
             width="64"
-            alt="logo"
+            alt="StoreBro Logo"
             className="mr-2"
           />
         </Link>

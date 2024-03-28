@@ -1,7 +1,6 @@
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import { Navbar } from "@/components/navbar";
-import { api } from "@/trpc/server";
 import { auth } from "@clerk/nextjs";
 
 type DashboardLayoutProps = {
@@ -19,12 +18,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = async ({
     redirect("/sign-in");
   }
 
-  const storeNumber = parseInt(params.storeId);
-  const store = await api.store.getById.query({ storeId: storeNumber });
+  // NOTE: enable this if you want everything to 404 if its not found
+  // const storeNumber = parseInt(params.storeId);
+  // const store = await api.store.getById.query({ storeId: storeNumber });
 
-  if (!store) {
-    return notFound();
-  }
+  // if (!store) {
+  //   return notFound();
+  // }
 
   return (
     <>

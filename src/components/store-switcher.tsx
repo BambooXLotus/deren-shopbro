@@ -1,16 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState } from 'react';
 
 import {
   Check,
   ChevronsUpDown,
   PlusCircle,
   Store as StoreIcon,
-} from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+} from 'lucide-react';
+import {
+  useParams,
+  useRouter,
+} from 'next/navigation';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -19,15 +22,15 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command";
+} from '@/components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { useStoreModal } from "@/hooks/use-store-modal";
-import { cn } from "@/lib/utils";
-import { Store } from "@/server/db/schema";
+} from '@/components/ui/popover';
+import { useStoreModal } from '@/hooks/use-store-modal';
+import { cn } from '@/lib/utils';
+import { Store } from '@/server/db/schema';
 
 type StoreSwitcherProps = {
   items: Store[];
@@ -70,7 +73,9 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
           className={cn("w-[200px] justify-between", className)}
         >
           <StoreIcon className="mr-2 h-4 w-4" />
-          <span className="truncate">{currentStore?.label}</span>
+          <span className="truncate">
+            {currentStore ? currentStore.label : "Select store..."}
+          </span>
           <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

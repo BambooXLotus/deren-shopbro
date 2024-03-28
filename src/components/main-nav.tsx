@@ -95,11 +95,11 @@ export const MainNav: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = ({
       label: "Orders",
       active: pathname === `/${storeId}/orders`,
     },
-    // {
-    //   href: `/${storeId}/settings`,
-    //   label: "Settings",
-    //   active: pathname === `/${storeId}/settings`,
-    // },
+    {
+      href: `/${storeId}/settings`,
+      label: "Settings",
+      active: pathname === `/${storeId}/settings`,
+    },
   ];
 
   return (
@@ -114,12 +114,6 @@ export const MainNav: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = ({
           />
         ))}
       </div>
-      <NavBarItem
-        key={`/${storeId}/orders`}
-        label="Settings"
-        target={`/${storeId}/orders`}
-        active={pathname === `/${storeId}/settings`}
-      />
     </nav>
   );
 };

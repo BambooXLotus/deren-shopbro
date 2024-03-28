@@ -5,7 +5,7 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { stores } from "@/server/db/schema";
 
 export const storeRouter = createTRPCRouter({
-  getFirst: protectedProcedure.query(({ ctx, input }) => {
+  getFirst: protectedProcedure.query(({ ctx }) => {
     return ctx.db.query.stores.findFirst({
       where: (stores, { eq }) => eq(stores.userId, ctx.auth.userId),
     });
@@ -17,9 +17,11 @@ export const storeRouter = createTRPCRouter({
       }),
     )
     .query(({ ctx, input }) => {
-      return ctx.db.query.stores.findFirst({
+      const returnValue = ctx.db.query.stores.findFirst({
         where: (stores, { eq }) => eq(stores.id, input.storeId),
       });
+
+      return returnValue;
     }),
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db.query.stores.findMany({
