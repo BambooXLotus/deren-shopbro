@@ -2,12 +2,7 @@
 
 import { useState } from "react";
 
-import {
-  Check,
-  ChevronsUpDown,
-  PlusCircle,
-  Store as StoreIcon,
-} from "lucide-react";
+import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -45,11 +40,11 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
 
   const formattedItems = items.map((item) => ({
     label: item.name,
-    value: item.id.toString(),
+    value: item.slug,
   }));
 
   const currentStore = formattedItems.find(
-    (item) => item.value === params.storeId,
+    (item) => item.value === params.slug,
   );
 
   function onStoreSelect(store: { value: string; label: string }) {
@@ -69,7 +64,6 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
           aria-label="Select a store"
           className={cn("w-[200px] justify-between", className)}
         >
-          <StoreIcon className="mr-2 h-4 w-4" />
           <span className="truncate">
             {currentStore ? currentStore.label : "Select store..."}
           </span>
@@ -87,7 +81,6 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
                   key={store.value}
                   onSelect={() => onStoreSelect(store)}
                 >
-                  <StoreIcon className="mr-2 h-4 w-4" />
                   <span className="truncate text-sm">{store.label}</span>
                   <Check
                     className={cn(

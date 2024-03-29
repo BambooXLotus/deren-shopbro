@@ -8,20 +8,20 @@ import { SettingsForm } from "./_components/settings-form";
 
 type SettingsPageProps = {
   params: {
-    storeId: string;
+    slug: string;
   };
 };
 
-const SettingsPage: React.FC<SettingsPageProps> = async ({ params }) => {
+const SettingsPage: React.FC<SettingsPageProps> = async ({
+  params: { slug },
+}) => {
   const { userId } = auth();
 
   if (!userId) {
     redirect("/sign-in");
   }
 
-  const storeId = parseInt(params.storeId);
-
-  const store = await api.store.getById.query({ storeId });
+  const store = await api.store.getBySlug.query({ slug });
 
   return (
     <div className="flex-col">

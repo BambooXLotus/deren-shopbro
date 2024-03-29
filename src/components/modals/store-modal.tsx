@@ -45,7 +45,7 @@ export const StoreModal: React.FC = () => {
 
       const store = stores[0];
       if (store) {
-        router.push(`/${store.id}`);
+        router.push(`/${store.slug}`);
       }
     },
     onError: (error) => {

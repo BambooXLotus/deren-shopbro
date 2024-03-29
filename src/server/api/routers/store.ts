@@ -1,9 +1,14 @@
 import { and, eq } from "drizzle-orm";
+import slugify from "slugify";
 import { z } from "zod";
 
 import { StoreCreateValidator } from "@/lib/validators/store-validators";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { stores } from "@/server/db/schema";
+
+function slugMe(text: string) {
+  return slugify(text, { strict: true, lower: true });
+}
 
 export const storeRouter = createTRPCRouter({
   getFirst: protectedProcedure.query(({ ctx }) => {
@@ -24,6 +29,19 @@ export const storeRouter = createTRPCRouter({
 
       return returnValue;
     }),
+  getBySlug: protectedProcedure
+    .input(
+      z.object({
+        slug: z.string(),
+      }),
+    )
+    .query(({ ctx, input }) => {
+      const returnValue = ctx.db.query.stores.findFirst({
+        where: (stores, { eq }) => eq(stores.slug, input.slug),
+      });
+
+      return returnValue;
+    }),
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db.query.stores.findMany({
       where: (stores, { eq }) => eq(stores.userId, ctx.auth.userId),
@@ -32,10 +50,13 @@ export const storeRouter = createTRPCRouter({
   create: protectedProcedure
     .input(StoreCreateValidator)
     .mutation(async ({ ctx, input }) => {
+      const slug = slugMe(input.name);
+
       const returnValue = await ctx.db
         .insert(stores)
         .values({
           name: input.name,
+          slug,
           userId: ctx.auth.userId,
         })
         .returning();
@@ -50,12 +71,15 @@ export const storeRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const slug = slugMe(input.name);
+
       const returnValue = await ctx.db
         .update(stores)
         .set({
           name: input.name,
+          slug,
           userId: ctx.auth.userId,
-          // updatedAt:
+          updatedAt: new Date().toISOString(),
         })
         .where(
           and(eq(stores.id, input.storeId), eq(stores.userId, ctx.auth.userId)),

@@ -53,52 +53,52 @@ export const MainNav: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = ({
 }) => {
   const pathname = usePathname();
   const params = useParams();
-  const storeId = params.storeId as string;
+  const slug = params.slug as string;
 
-  if (!storeId) {
+  if (!slug) {
     return <></>;
   }
 
   const routes = [
     {
-      href: `/${storeId}`,
+      href: `/${slug}`,
       label: "Overview",
-      active: pathname === `/${storeId}`,
+      active: pathname === `/${slug}`,
     },
     {
-      href: `/${storeId}/billboards`,
+      href: `/${slug}/billboards`,
       label: "Billboards",
-      active: pathname === `/${storeId}/billboards`,
+      active: pathname === `/${slug}/billboards`,
     },
     {
-      href: `/${storeId}/categories`,
+      href: `/${slug}/categories`,
       label: "Categories",
-      active: pathname === `/${storeId}/categories`,
+      active: pathname === `/${slug}/categories`,
     },
     {
-      href: `/${storeId}/sizes`,
+      href: `/${slug}/sizes`,
       label: "Sizes",
-      active: pathname === `/${storeId}/sizes`,
+      active: pathname === `/${slug}/sizes`,
     },
     {
-      href: `/${storeId}/colors`,
+      href: `/${slug}/colors`,
       label: "Colors",
-      active: pathname === `/${storeId}/colors`,
+      active: pathname === `/${slug}/colors`,
     },
     {
-      href: `/${storeId}/products`,
+      href: `/${slug}/products`,
       label: "Products",
-      active: pathname === `/${storeId}/products`,
+      active: pathname === `/${slug}/products`,
     },
     {
-      href: `/${storeId}/orders`,
+      href: `/${slug}/orders`,
       label: "Orders",
-      active: pathname === `/${storeId}/orders`,
+      active: pathname === `/${slug}/orders`,
     },
     {
-      href: `/${storeId}/settings`,
+      href: `/${slug}/settings`,
       label: "Settings",
-      active: pathname === `/${storeId}/settings`,
+      active: pathname === `/${slug}/settings`,
     },
   ];
 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { Trash2Icon } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -36,13 +36,12 @@ type SettingsFormProps = {
 };
 
 export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
-  const params = useParams();
   const router = useRouter();
   const origin = useOrigin();
 
   const [open, setOpen] = useState(false);
 
-  const storeId = parseInt(params.storeId as string);
+  const storeId = initialData.id;
 
   const form = useForm<StoreEditRequest>({
     resolver: zodResolver(StoreEditValidator),
@@ -51,10 +50,11 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
 
   const { mutate: editStore, isLoading: isEditLoading } =
     api.store.edit.useMutation({
-      onSuccess: () => {
-        if (form.formState.isSubmitSuccessful) {
+      onSuccess: (stores) => {
+        const store = stores[0];
+        if (store && form.formState.isSubmitSuccessful) {
           toast.success("Store Updated.");
-          router.refresh();
+          router.push(`/${store.slug}/settings`);
         }
       },
       onError: (error) => {
@@ -129,8 +129,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
               )}
             />
           </div>
-          <div>
+          <div className="flex flex-col">
             <Label>Created At - {initialData.createdAt}</Label>
+            <Label>Updated At - {initialData.updatedAt}</Label>
           </div>
           <Button type="submit" disabled={isLoading}>
             Save Changes
@@ -140,7 +141,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
       <Separator />
       <ApiAlert
         title="NEXT_PUBLIC_API_URL"
-        description={`${origin}/api/${storeId}`}
+        description={`${origin}/api/${initialData.slug}`}
         variant="public"
       />
     </>

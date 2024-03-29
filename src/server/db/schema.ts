@@ -5,12 +5,13 @@ export const createTable = sqliteTableCreator(
   (name) => `deren-storebro_${name}`,
 );
 
-//TODO:Update At
 export const stores = createTable(
   "store",
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    name: text("name", { length: 256 }).notNull(),
+    name: text("name", { length: 256 }).unique().notNull(),
+    slug: text("slug", { length: 256 }).unique().notNull(),
+    description: text("description", { length: 1000 }),
     userId: text("userId", { length: 256 }).notNull(),
     createdAt: text("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
@@ -19,6 +20,7 @@ export const stores = createTable(
   },
   (store) => ({
     nameIndex: index("name_idx").on(store.name),
+    slugIndex: index("slug_idx").on(store.slug),
   }),
 );
 export type InsertStore = typeof stores.$inferInsert;

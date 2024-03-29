@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 
 import { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,9 +10,8 @@ import { ModalProvider } from "@/providers/modal-provider";
 import { TRPCReactProvider } from "@/trpc/react";
 import { ClerkProvider } from "@clerk/nextjs";
 
-const inter = Inter({
+const font = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
@@ -34,7 +33,7 @@ export default function RootLayout({
       <TRPCReactProvider>
         <TooltipProvider>
           <html lang="en">
-            <body className={`font-sans ${inter.variable}`}>
+            <body className={`font-sans ${font.className}`}>
               {children}
               <Toaster />
               <ModalProvider />
