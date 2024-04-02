@@ -1,6 +1,8 @@
 # StoreBro
 
-![StoreBro Logo](./public/storebro.logo.png "StoreBro Logo")
+<p align="center">
+  <img src="https://raw.githubusercontent.com/BambooXLotus/deren-storebro/main/public/storebro-logo.png" alt="StoreBro Logo" title="StoreBro Logo">
+</p>
 
 This Next.js Store Admin App is a comprehensive solution designed to streamline the management of online stores. Although still under construction, once completed, it will allow users to create stores, add and manage products, variations, categories, and oversee orders with ease. Built with Next.js 14 and leveraging a modern tech stack, this app aims to provide a robust and user-friendly interface for store administration.
 
