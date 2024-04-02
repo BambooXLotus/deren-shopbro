@@ -1,18 +1,15 @@
-import { redirect } from "next/navigation";
-
 import { Navbar } from "@/components/navbar";
-import { auth } from "@clerk/nextjs";
 
 type RootLayoutProps = {
   children: React.ReactNode;
 };
 
 const RootLayout: React.FC<RootLayoutProps> = async ({ children }) => {
-  const { userId } = auth();
+  // const { userId } = auth();
 
-  if (!userId) {
-    redirect("/sign-in");
-  }
+  // if (!userId) {
+  //   redirect("/sign-in");
+  // }
 
   //TODO: Show a welcome screen with a list of stores
   // const store = await api.store.getFirstByUserId.query({ userId });

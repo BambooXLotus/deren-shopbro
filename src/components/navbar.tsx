@@ -1,15 +1,29 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import { LoaderIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
-import { api } from '@/trpc/server';
-import { UserButton } from '@clerk/nextjs';
+import { SelectStore } from "@/server/db/schema";
+import { api } from "@/trpc/server";
+import {
+  auth,
+  ClerkLoaded,
+  ClerkLoading,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/nextjs";
 
-import { MainNav } from './main-nav';
-import { StoreSwitcher } from './store-switcher';
+import { MainNav } from "./main-nav";
+import { StoreSwitcher } from "./store-switcher";
 
 export const Navbar: React.FC = async () => {
   // const { isSignedIn, user } = useUser();
-  const stores = await api.store.getAll.query();
+  const { userId } = auth();
+  let stores: SelectStore[] = [];
+  if (userId) {
+    stores = await api.store.getAll.query();
+  }
 
   return (
     // <nav className="bg-teal-600 px-4 py-1.5 backdrop-blur-sm md:px-5">
@@ -60,7 +74,17 @@ export const Navbar: React.FC = async () => {
         <StoreSwitcher items={stores} />
         <MainNav className="mx-3" />
         <div className="ml-auto flex items-center space-x-4">
-          <UserButton afterSignOutUrl="/" />
+          <ClerkLoading>
+            <LoaderIcon className="h-5 w-5 animate-spin text-white" />
+          </ClerkLoading>
+          <ClerkLoaded>
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
+            <SignedOut>
+              <SignInButton mode="modal"></SignInButton>
+            </SignedOut>
+          </ClerkLoaded>
         </div>
       </div>
     </div>

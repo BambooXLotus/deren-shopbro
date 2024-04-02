@@ -1,7 +1,4 @@
-import { redirect } from "next/navigation";
-
 import { Navbar } from "@/components/navbar";
-import { auth } from "@clerk/nextjs";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -12,11 +9,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = async ({
   children,
   params,
 }) => {
-  const { userId } = auth();
+  // const { userId } = auth();
 
-  if (!userId) {
-    redirect("/sign-in");
-  }
+  // if (!userId) {
+  //   redirect("/sign-in");
+  // }
 
   // NOTE: enable this if you want everything to 404 if its not found
   // const storeNumber = parseInt(params.storeId);

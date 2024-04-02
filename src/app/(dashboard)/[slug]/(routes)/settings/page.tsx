@@ -1,8 +1,5 @@
-import { redirect } from "next/navigation";
-
 import { AlertBox } from "@/components/alert-box";
 import { api } from "@/trpc/server";
-import { auth } from "@clerk/nextjs";
 
 import { SettingsForm } from "./_components/settings-form";
 
@@ -15,11 +12,11 @@ type SettingsPageProps = {
 const SettingsPage: React.FC<SettingsPageProps> = async ({
   params: { slug },
 }) => {
-  const { userId } = auth();
+  // const { userId } = auth();
 
-  if (!userId) {
-    redirect("/sign-in");
-  }
+  // if (!userId) {
+  //   redirect("/sign-in");
+  // }
 
   const store = await api.store.getBySlug.query({ slug });
 

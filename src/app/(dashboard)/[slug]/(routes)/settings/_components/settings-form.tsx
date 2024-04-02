@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { Trash2Icon } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -23,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useOrigin } from "@/hooks/use-origin";
+import { UploadButton } from "@/lib/uploadthing";
 import {
   type StoreEditRequest,
   StoreEditValidator,
@@ -40,6 +42,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
   const origin = useOrigin();
 
   const [open, setOpen] = useState(false);
+  const [brandSrc, setBrandSrc] = useState("");
 
   const storeId = initialData.id;
 
@@ -110,7 +113,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
           className="w-full space-y-8"
           onSubmit={(event) => void form.handleSubmit(onFormSubmit)(event)}
         >
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 gap-4">
             <FormField
               control={form.control}
               name="name"
@@ -128,6 +131,54 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Brand</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      placeholder="Store name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div></div>
+            <div className="flex flex-col space-y-2">
+              <div className="relative h-64 w-full overflow-hidden rounded-lg border bg-slate-300">
+                {brandSrc && (
+                  <Image
+                    src={brandSrc}
+                    alt="Store brand"
+                    layout="fill"
+                    objectFit="cover"
+                    objectPosition="center"
+                  />
+                )}
+              </div>
+              <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  // Do something with the response
+                  const file = res[0];
+                  if (file) {
+                    console.log("Files: ", res);
+                    // alert("Upload Completed");
+                    setBrandSrc(file.url);
+                    toast.success("Upload Completed");
+                  }
+                }}
+                onUploadError={(error: Error) => {
+                  // Do something with the error.
+                  alert(`ERROR! ${error.message}`);
+                }}
+              />
+            </div>
           </div>
           <div className="flex flex-col">
             <Label>Created At - {initialData.createdAt}</Label>
