@@ -13,7 +13,7 @@ function slugMe(text: string) {
 export const storeRouter = createTRPCRouter({
   getFirst: protectedProcedure.query(({ ctx }) => {
     return ctx.db.query.stores.findFirst({
-      where: (stores, { eq }) => eq(stores.userId, ctx.auth.userId),
+      where: (stores, { eq }) => eq(stores.clerkId, ctx.auth.userId),
     });
   }),
   getById: protectedProcedure
@@ -44,7 +44,7 @@ export const storeRouter = createTRPCRouter({
     }),
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db.query.stores.findMany({
-      where: (stores, { eq }) => eq(stores.userId, ctx.auth.userId),
+      where: (stores, { eq }) => eq(stores.clerkId, ctx.auth.userId),
     });
   }),
   create: protectedProcedure
@@ -57,7 +57,7 @@ export const storeRouter = createTRPCRouter({
         .values({
           name: input.name,
           slug,
-          userId: ctx.auth.userId,
+          clerkId: ctx.auth.userId,
         })
         .returning();
 
@@ -78,11 +78,14 @@ export const storeRouter = createTRPCRouter({
         .set({
           name: input.name,
           slug,
-          userId: ctx.auth.userId,
+          clerkId: ctx.auth.userId,
           updatedAt: new Date().toISOString(),
         })
         .where(
-          and(eq(stores.id, input.storeId), eq(stores.userId, ctx.auth.userId)),
+          and(
+            eq(stores.id, input.storeId),
+            eq(stores.clerkId, ctx.auth.userId),
+          ),
         )
         .returning();
 
@@ -98,7 +101,10 @@ export const storeRouter = createTRPCRouter({
       const returnValue = await ctx.db
         .delete(stores)
         .where(
-          and(eq(stores.id, input.storeId), eq(stores.userId, ctx.auth.userId)),
+          and(
+            eq(stores.id, input.storeId),
+            eq(stores.clerkId, ctx.auth.userId),
+          ),
         )
         .returning();
 

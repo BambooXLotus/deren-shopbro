@@ -13,7 +13,7 @@ export const stores = createTable(
     slug: text("slug", { length: 256 }).unique().notNull(),
     description: text("description", { length: 1000 }),
     imageUrl: text("imageUrl", { length: 1000 }),
-    userId: text("userId", { length: 256 }).notNull(),
+    clerkId: text("clerkId", { length: 256 }).notNull(),
     createdAt: text("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
