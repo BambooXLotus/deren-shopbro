@@ -42,7 +42,6 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
   const origin = useOrigin();
 
   const [open, setOpen] = useState(false);
-  const [brandSrc, setBrandSrc] = useState("");
 
   const storeId = initialData.id;
 
@@ -58,6 +57,21 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
         if (store && form.formState.isSubmitSuccessful) {
           toast.success("Store Updated.");
           router.push(`/${store.slug}/settings`);
+        }
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
+  const { mutate: saveImage, isLoading: isSaveImageLoading } =
+    api.store.saveImage.useMutation({
+      onSuccess: (stores) => {
+        const store = stores[0];
+
+        if (store) {
+          toast.success("Store Image Saved.");
+          router.refresh();
         }
       },
       onError: (error) => {
@@ -151,9 +165,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
             <div></div>
             <div className="flex flex-col space-y-2">
               <div className="relative h-64 w-full overflow-hidden rounded-lg border bg-slate-300">
-                {brandSrc && (
+                {initialData.imageUrl && (
                   <Image
-                    src={brandSrc}
+                    src={initialData.imageUrl}
                     alt="Store brand"
                     layout="fill"
                     objectFit="cover"
@@ -167,10 +181,10 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
                   // Do something with the response
                   const file = res[0];
                   if (file) {
-                    console.log("Files: ", res);
-                    // alert("Upload Completed");
-                    setBrandSrc(file.url);
-                    toast.success("Upload Completed");
+                    saveImage({
+                      storeId: initialData.id,
+                      imageUrl: file.url,
+                    });
                   }
                 }}
                 onUploadError={(error: Error) => {

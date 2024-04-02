@@ -91,6 +91,30 @@ export const storeRouter = createTRPCRouter({
 
       return returnValue;
     }),
+  saveImage: protectedProcedure
+    .input(
+      z.object({
+        storeId: z.number(),
+        imageUrl: z.string().url(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const returnValue = await ctx.db
+        .update(stores)
+        .set({
+          imageUrl: input.imageUrl,
+          updatedAt: new Date().toISOString(),
+        })
+        .where(
+          and(
+            eq(stores.id, input.storeId),
+            eq(stores.clerkId, ctx.auth.userId),
+          ),
+        )
+        .returning();
+
+      return returnValue;
+    }),
   delete: protectedProcedure
     .input(
       z.object({
