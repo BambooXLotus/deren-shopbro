@@ -1,6 +1,9 @@
 "use client";
 
-import { Welcome } from '../_components/welcome';
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+
+import { Marketing } from "../_components/marketing";
+import { Welcome } from "../_components/welcome";
 
 export default function HomePage() {
   // const { data: stores, isLoading } = api.store.getAll.useQuery();
@@ -15,7 +18,12 @@ export default function HomePage() {
       <div>
         {stores?.map((store) => <div key={store.id}>{store.name}</div>)}
       </div> */}
-      <Welcome />
+      <SignedOut>
+        <Marketing />
+      </SignedOut>
+      <SignedIn>
+        <Welcome />
+      </SignedIn>
     </div>
   );
 }

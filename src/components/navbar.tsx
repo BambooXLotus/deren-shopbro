@@ -16,6 +16,7 @@ import {
 
 import { MainNav } from "./main-nav";
 import { StoreSwitcher } from "./store-switcher";
+import { Button } from "./ui/button";
 
 export const Navbar: React.FC = async () => {
   // const { isSignedIn, user } = useUser();
@@ -60,7 +61,7 @@ export const Navbar: React.FC = async () => {
     //     </div>
     //   </div>
     // </nav>
-    <div className="border-b bg-teal-600">
+    <div className="border-b bg-teal-600 ">
       <div className="flex h-16 items-center px-4">
         <Link href="/" className="hidden md:block">
           <Image
@@ -71,7 +72,9 @@ export const Navbar: React.FC = async () => {
             className="mr-2"
           />
         </Link>
-        <StoreSwitcher items={stores} />
+        <SignedIn>
+          <StoreSwitcher items={stores} />
+        </SignedIn>
         <MainNav className="mx-3" />
         <div className="ml-auto flex items-center space-x-4">
           <ClerkLoading>
@@ -82,7 +85,9 @@ export const Navbar: React.FC = async () => {
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
             <SignedOut>
-              <SignInButton mode="modal"></SignInButton>
+              <SignInButton mode="modal">
+                <Button>Sign In</Button>
+              </SignInButton>
             </SignedOut>
           </ClerkLoaded>
         </div>

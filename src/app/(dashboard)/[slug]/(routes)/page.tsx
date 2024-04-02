@@ -9,7 +9,11 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
 }) => {
   const store = await api.store.getBySlug.query({ slug });
 
-  return <div>Active Store: {store?.name}</div>;
+  if (!store) {
+    return <div>STORE NOT FOUND</div>;
+  }
+
+  return <div>Active Store: {store.name}</div>;
 };
 
 export default DashboardPage;
