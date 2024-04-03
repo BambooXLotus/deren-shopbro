@@ -1,43 +1,20 @@
 import { and, eq } from "drizzle-orm";
-import slugify from "slugify";
 import { z } from "zod";
 
-import { StoreCreateValidator } from "@/lib/validators/store-validators";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { stores } from "@/server/db/schema";
+import { billboards, stores } from "@/server/db/schema";
+import { TRPCError } from "@trpc/server";
 
-function slugMe(text: string) {
-  return slugify(text, { strict: true, lower: true });
-}
-
-export const storeRouter = createTRPCRouter({
-  getFirst: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.query.stores.findFirst({
-      where: (stores, { eq }) => eq(stores.clerkId, ctx.auth.userId),
-    });
-  }),
+export const billboardRouter = createTRPCRouter({
   getById: protectedProcedure
     .input(
       z.object({
-        storeId: z.number(),
+        billboardId: z.number(),
       }),
     )
     .query(({ ctx, input }) => {
-      const returnValue = ctx.db.query.stores.findFirst({
-        where: (stores, { eq }) => eq(stores.id, input.storeId),
-      });
-
-      return returnValue;
-    }),
-  getBySlug: protectedProcedure
-    .input(
-      z.object({
-        slug: z.string(),
-      }),
-    )
-    .query(({ ctx, input }) => {
-      const returnValue = ctx.db.query.stores.findFirst({
-        where: (stores, { eq }) => eq(stores.slug, input.slug),
+      const returnValue = ctx.db.query.billboards.findFirst({
+        where: (billboards, { eq }) => eq(billboards.id, input.billboardId),
       });
 
       return returnValue;
@@ -48,16 +25,31 @@ export const storeRouter = createTRPCRouter({
     });
   }),
   create: protectedProcedure
-    .input(StoreCreateValidator)
+    .input(
+      z.object({
+        storeSlug: z.string(),
+        label: z.string(),
+        imageUrl: z.string().url(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
-      const slug = slugMe(input.name);
+      const store = await ctx.db.query.stores.findFirst({
+        where: (stores, { eq }) => eq(stores.slug, input.storeSlug),
+      });
+
+      if (!store) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Store not found by slug.",
+        });
+      }
 
       const returnValue = await ctx.db
-        .insert(stores)
+        .insert(billboards)
         .values({
-          name: input.name,
-          slug,
-          clerkId: ctx.auth.userId,
+          storeId: store.id,
+          label: input.label,
+          imageUrl: input.imageUrl,
         })
         .returning();
 
@@ -66,25 +58,23 @@ export const storeRouter = createTRPCRouter({
   edit: protectedProcedure
     .input(
       z.object({
-        storeId: z.number(),
-        name: z.string(),
+        billboardId: z.number(),
+        label: z.string(),
+        imageUrl: z.string().url(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const slug = slugMe(input.name);
-
       const returnValue = await ctx.db
-        .update(stores)
+        .update(billboards)
         .set({
-          name: input.name,
-          slug,
-          clerkId: ctx.auth.userId,
+          label: input.label,
+          imageUrl: input.imageUrl,
           updatedAt: new Date().toISOString(),
         })
         .where(
           and(
-            eq(stores.id, input.storeId),
-            // TODO: Figure out how to let other users to edit a store
+            eq(billboards.id, input.billboardId),
+            // TODO: Figure out how to let other users to edit
             // eq(stores.clerkId, ctx.auth.userId),
           ),
         )
@@ -119,15 +109,15 @@ export const storeRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(
       z.object({
-        storeId: z.number(),
+        billboardId: z.number(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const returnValue = await ctx.db
-        .delete(stores)
+        .delete(billboards)
         .where(
           and(
-            eq(stores.id, input.storeId),
+            eq(stores.id, input.billboardId),
             eq(stores.clerkId, ctx.auth.userId),
           ),
         )
