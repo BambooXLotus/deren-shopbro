@@ -1,33 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
-import { toast } from "sonner";
+import {
+  Copy,
+  Edit,
+  MoreHorizontal,
+  Trash,
+} from 'lucide-react';
+import {
+  useParams,
+  useRouter,
+} from 'next/navigation';
+import { toast } from 'sonner';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 
-import { type BillboardColumn } from "./columns";
+import { type BillboardColumn } from './columns';
 
 type CellActionProps = {
   data: BillboardColumn;
 };
 
+type CellActionParams = {
+  slug: string;
+};
+
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
-  const params = useParams();
+  const params = useParams<CellActionParams>();
 
   const [open, setOpen] = useState(false);
 
-  const storeId = params.storeId as string;
+  const storeSlug = params.slug;
 
   // const { mutate: deleteBillboard, isLoading: isDeleteLoading } = useMutation({
   //   mutationFn: async () => {
@@ -74,9 +86,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             Copy Id
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() =>
-              void router.push(`/${storeId}/billboards/${data.id}`)
-            }
+            onClick={() => router.push(`/${storeSlug}/billboards/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" />
             Update

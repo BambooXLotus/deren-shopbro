@@ -1,5 +1,15 @@
-import { relations, sql } from "drizzle-orm";
-import { index, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
+import {
+  relations,
+  sql,
+} from 'drizzle-orm';
+import {
+  index,
+  int,
+  sqliteTableCreator,
+  text,
+} from 'drizzle-orm/sqlite-core';
+
+import { createId } from '@paralleldrive/cuid2';
 
 export const createTable = sqliteTableCreator(
   (name) => `deren-storebro_${name}`,
@@ -31,18 +41,26 @@ export const storesRelations = relations(stores, ({ many }) => ({
   billboards: many(billboards),
 }));
 
-export const billboards = createTable("billboard", {
-  id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-  label: text("label", { length: 256 }).notNull(),
-  imageUrl: text("image_url", { length: 1000 }).notNull(),
-  storeId: int("store_id")
-    .references(() => stores.id)
-    .notNull(),
-  createdAt: text("created_at")
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: text("updatedAt"),
-});
+export const billboards = createTable(
+  "billboard",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => createId()),
+    label: text("label", { length: 256 }).notNull(),
+    imageUrl: text("image_url", { length: 1000 }),
+    storeId: int("store_id")
+      .references(() => stores.id)
+      .notNull(),
+    createdAt: text("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: text("updatedAt"),
+  },
+  (billboard) => ({
+    idIndex: index("billboard_id_idx").on(billboard.id),
+  }),
+);
 export type InsertBillboard = typeof billboards.$inferInsert;
 export type SelectBillboard = typeof billboards.$inferSelect;
 

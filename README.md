@@ -21,8 +21,9 @@ This Next.js Store Admin App is a comprehensive solution designed to streamline 
 - **[Drizzle ORM](https://drizzle.orm/)**: Elegant ORM for better database management.
 - **[Turso](https://turso.tech/)**: SQLite for Production.
 - **[Tailwind CSS](https://tailwindcss.com/)**: For utility-first styling.
-- **[Shadcn UI](https://shadcn.github.io/ui/)**: React component library for rapid development.
+- **[Shadcn UI](https://shadcn.github.io/ui/)**: Tailwind component library.
 - **[Zustand](https://github.com/pmndrs/zustand)**: A simple, fast, and scalable bearbones state-management solution.
+- **[UploadThings](https://uploadthings.com)**: Powerful and easy-to-use file uploading service, simplifying image and file management in your application.
 
 ## Future Enhancements
 
@@ -38,10 +39,15 @@ As the Next.js Store Admin App continues to evolve, we have several exciting fea
 
 ### Store Management Enhancements
 
-- **Multi-Store Dashboard**: Develop a centralized dashboard for owners to easily switch between and manage multiple stores. Free tier is 5 stores and maybe more is
+- **Multi-Store Dashboard**: Develop a centralized dashboard for owners to easily switch between and manage multiple stores. Free tier is 5 stores and maybe more is Premium Tier
 - **Advanced Analytics**: Provide deeper insights into store performance, sales trends, and customer behavior to help store owners make informed decisions.
 
 ### Product and Category Management Improvements
 
 - **Bulk Operations**: Introduce the ability to perform bulk actions for adding, updating, or deleting products and categories, streamlining the management process.
 - **Enhanced Product Variants**: Improve support for product variants, allowing for more complex product
+
+## Other
+
+- **Rate Limiting**: Implement rate limiting using [Upstash Ratelimit](https://github.com/upstash/ratelimit) to prevent abuse and ensure fair resource usage.
+- **UploadThings Maintenance**: Regular maintenance with UploadThings to clean up unused images, ensuring efficient storage management.
