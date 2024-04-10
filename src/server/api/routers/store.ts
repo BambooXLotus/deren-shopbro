@@ -19,7 +19,7 @@ export const storeRouter = createTRPCRouter({
   getById: protectedProcedure
     .input(
       z.object({
-        storeId: z.number(),
+        storeId: z.string(),
       }),
     )
     .query(({ ctx, input }) => {
@@ -66,7 +66,7 @@ export const storeRouter = createTRPCRouter({
   edit: protectedProcedure
     .input(
       z.object({
-        storeId: z.number(),
+        storeId: z.string(),
         name: z.string(),
       }),
     )
@@ -82,11 +82,9 @@ export const storeRouter = createTRPCRouter({
           updatedAt: new Date().toISOString(),
         })
         .where(
-          and(
-            eq(stores.id, input.storeId),
-            // TODO: Figure out how to let other users to edit a store
-            // eq(stores.clerkId, ctx.auth.userId),
-          ),
+          eq(stores.id, input.storeId),
+          // TODO: Figure out how to let other users to edit a store
+          // eq(stores.clerkId, ctx.auth.userId),
         )
         .returning();
 
@@ -95,7 +93,7 @@ export const storeRouter = createTRPCRouter({
   saveImage: protectedProcedure
     .input(
       z.object({
-        storeId: z.number(),
+        storeId: z.string(),
         imageUrl: z.string().url(),
       }),
     )
@@ -119,7 +117,7 @@ export const storeRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(
       z.object({
-        storeId: z.number(),
+        storeId: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

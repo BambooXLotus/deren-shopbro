@@ -30,17 +30,17 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <TRPCReactProvider>
-        <TooltipProvider>
-          <html lang="en">
-            <body className={`font-sans ${font.className}`}>
+      <html lang="en">
+        <body className={`font-sans ${font.className}`}>
+          <TRPCReactProvider>
+            <TooltipProvider>
               {children}
               <Toaster />
               <ModalProvider />
-            </body>
-          </html>
-        </TooltipProvider>
-      </TRPCReactProvider>
+            </TooltipProvider>
+          </TRPCReactProvider>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

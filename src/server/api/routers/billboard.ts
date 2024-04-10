@@ -1,18 +1,9 @@
-import {
-  and,
-  eq,
-} from 'drizzle-orm';
-import { z } from 'zod';
+import { and, eq } from "drizzle-orm";
+import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-} from '@/server/api/trpc';
-import {
-  billboards,
-  stores,
-} from '@/server/db/schema';
-import { TRPCError } from '@trpc/server';
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { billboards, stores } from "@/server/db/schema";
+import { TRPCError } from "@trpc/server";
 
 export const billboardRouter = createTRPCRouter({
   getById: protectedProcedure
@@ -100,7 +91,7 @@ export const billboardRouter = createTRPCRouter({
   saveImage: protectedProcedure
     .input(
       z.object({
-        storeId: z.number(),
+        storeId: z.string(),
         imageUrl: z.string().url(),
       }),
     )

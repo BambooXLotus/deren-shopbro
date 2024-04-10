@@ -1,15 +1,7 @@
-import {
-  relations,
-  sql,
-} from 'drizzle-orm';
-import {
-  index,
-  int,
-  sqliteTableCreator,
-  text,
-} from 'drizzle-orm/sqlite-core';
+import { relations, sql } from "drizzle-orm";
+import { index, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
 
-import { createId } from '@paralleldrive/cuid2';
+import { createId } from "@paralleldrive/cuid2";
 
 export const createTable = sqliteTableCreator(
   (name) => `deren-storebro_${name}`,
@@ -18,7 +10,9 @@ export const createTable = sqliteTableCreator(
 export const stores = createTable(
   "store",
   {
-    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => createId()),
     name: text("name", { length: 256 }).unique().notNull(),
     slug: text("slug", { length: 256 }).unique().notNull(),
     description: text("description", { length: 1000 }),
@@ -49,7 +43,7 @@ export const billboards = createTable(
       .$defaultFn(() => createId()),
     label: text("label", { length: 256 }).notNull(),
     imageUrl: text("image_url", { length: 1000 }),
-    storeId: int("store_id")
+    storeId: text("store_id")
       .references(() => stores.id)
       .notNull(),
     createdAt: text("created_at")
